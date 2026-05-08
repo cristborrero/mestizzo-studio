@@ -1,27 +1,23 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
-import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
-
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 const fontHeading = Outfit({
   subsets: ["latin"],
   variable: "--font-heading",
+  display: 'swap',
 });
 
-const fontBody = Inter({
+const fontSans = Inter({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-sans",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "MESTIZZO Studio | Cotizador",
-  description: "Configure su presupuesto a medida. Servicios de branding, desarrollo web, marketing digital y más.",
+  title: "MESTIZZO Studio | Digital Atelier",
+  description: "Boutique digital studio crafting high-end brand identities and immersive web experiences.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -33,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${GeistSans.variable} ${GeistMono.variable} ${fontSans.variable} ${fontHeading.variable} ${fontBody.variable}`} suppressHydrationWarning>
-      <body className={`${fontHeading.variable} ${fontBody.variable} ${GeistMono.variable} antialiased bg-background text-foreground`}>
+    <html lang="es" className={`${fontHeading.variable} ${fontSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+      <body className="antialiased bg-background text-foreground font-sans">
         {children}
       </body>
     </html>
