@@ -93,8 +93,9 @@ export default function FluidCanvas() {
     };
 
     const fit = () => {
-      // Capping DPR at 1.0 on mobile to save GPU/Main-thread cycles.
-      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      // Capping DPR at 1.0 on mobile and 1.5 on desktop to save cycles.
+      // High-DPI screens (4K) don't need 2.0+ for a background effect.
+      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = Math.floor(window.innerWidth * dpr);
       canvas.height = Math.floor(window.innerHeight * dpr);
     };
@@ -113,18 +114,18 @@ export default function FluidCanvas() {
             IMMEDIATE: false,
             AUTO: false,
             INTERVAL: 0,
-            // Drastically lower settings for mobile to fix TBT.
-            SIM_RESOLUTION: isMobile ? 32 : 128,
+            // Optimized settings for desktop and mobile to fix TBT.
+            SIM_RESOLUTION: isMobile ? 32 : 96,
             DYE_RESOLUTION: isMobile ? 512 : 1024,
-            DENSITY_DISSIPATION: isMobile ? 3.0 : 2.2, // Faster cleanup on mobile
+            DENSITY_DISSIPATION: isMobile ? 3.0 : 2.2, 
             VELOCITY_DISSIPATION: 1.0,
             PRESSURE: 0.8,
-            PRESSURE_ITERATIONS: isMobile ? 4 : 20, // Critical for TBT reduction
+            PRESSURE_ITERATIONS: isMobile ? 4 : 10, // Reduced from 20 on desktop
             CURL: isMobile ? 15 : 22,
             SPLAT_RADIUS: 0.1,
             SPLAT_FORCE: 5000,
             SPLAT_COUNT: 0,
-            SHADING: !isMobile, // Disable shading on mobile for extra speed
+            SHADING: !isMobile, 
             COLORFUL: false,
             COLOR_UPDATE_SPEED: 0,
             PAUSED: false,
@@ -175,7 +176,7 @@ export default function FluidCanvas() {
         .catch((err) => {
           console.warn('[FluidCanvas] webgl-fluid failed to load:', err);
         });
-    }, isMobile ? 2000 : 500); // 2s delay on mobile, 500ms on desktop
+    }, isMobile ? 2000 : 1500); // 2s on mobile, 1.5s on desktop for stability
 
     return () => {
       cancelled = true;
