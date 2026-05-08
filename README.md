@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MESTIZZO Studio — Boutique Agency Platform
 
-## Getting Started
+![MESTIZZO Banner](https://mestizzo.studio/banner.png) <!-- Placeholder para tu banner real -->
 
-First, run the development server:
+**MESTIZZO** es una plataforma digital de alta gama diseñada para una agencia boutique. Combina una estética visual minimalista y editorial con una infraestructura técnica robusta y escalable.
 
+---
+
+## ✨ Características Principales
+
+- **Interacción Fluida:** Simulación de fluidos en tiempo real mediante WebGL (FluidCanvas) para una experiencia de usuario inmersiva.
+- **Multi-Step Contact Form:** Formulario de contacto inteligente con validación en tiempo real y persistencia de datos (Zustand).
+- **Admin Dashboard:** Panel de administración protegido para gestionar servicios, presupuestos y solicitudes.
+- **Arquitectura de Vanguardia:** Implementación de Server Actions, Drizzle ORM y Auth.js v5 para máxima seguridad y performance.
+- **Diseño Editorial:** Tipografía curada, dark mode premium y micro-animaciones con Framer Motion.
+
+---
+
+## 🛠️ Stack Tecnológico
+
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Base de Datos:** [Neon](https://neon.tech/) + [Drizzle ORM](https://orm.drizzle.team/)
+- **Autenticación:** [Auth.js v5](https://authjs.dev/) (Google OAuth)
+- **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
+- **Estado Global:** [Zustand](https://zustand-demo.pmnd.rs/)
+- **Emails:** [Resend](https://resend.com/)
+
+---
+
+## 🚀 Inicio Rápido
+
+### 1. Clonar y Configurar
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/cristborrero/mestizzo-studio.git
+cd srm-quote
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Variables de Entorno
+Copia el archivo de ejemplo y completa tus credenciales:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Base de Datos
+Sincroniza el esquema con tu base de datos de Neon:
+```bash
+npx drizzle-kit push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Modo Desarrollo
+```bash
+npm run dev
+```
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🏛️ Estructura del Proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+src/
+├── app/          # App Router (Public & Admin Protected)
+├── actions/      # Next.js Server Actions
+├── components/   # UI Components & Interaction Logic
+├── lib/          # Shared Utilities, DB Config & Stores
+└── validation/   # Logic for data integrity (Zustand/Server)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🤝 Contacto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Desarrollado por **MESTIZZO Studio**.  
+Transformamos tu visión en un legado digital.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Web:** [mestizzo.studio](https://mestizzo.studio)
+- **GitHub:** [@cristborrero](https://github.com/cristborrero)
+
+---
+*© 2026 MESTIZZO Studio. Todos los derechos reservados.*
