@@ -27,7 +27,7 @@ const BUDGET_OPTIONS = [
   "Aún no estoy seguro",
 ];
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function MultiStepForm() {
   const store = useContactStore();

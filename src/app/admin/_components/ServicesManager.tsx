@@ -23,7 +23,7 @@ const EMPTY_FORM = {
   code: '', category: 'Identidad Corporativa y Branding', name: '', description: '', priceUsd: '', priceColRef: '',
 };
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 type FormData = typeof EMPTY_FORM;
 

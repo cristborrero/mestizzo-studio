@@ -150,7 +150,7 @@ export function AdminDashboard({ userName, stats, categoryCounts, recentQuotes }
                     className="h-full bg-foreground group-hover:bg-accent transition-colors"
                     initial={{ width: 0 }}
                     animate={{ width: `${(count / maxCount) * 100}%` }}
-                    transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] as const }}
                   />
                 </div>
               </div>
