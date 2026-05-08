@@ -41,7 +41,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Error fetching services:', error);
     return NextResponse.json(
-      { error: String(error) },
+      { error: 'Error al obtener los servicios. Por favor, inténtalo de nuevo más tarde.' },
       { status: 500 }
     );
   }

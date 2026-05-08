@@ -10,6 +10,7 @@ export type ContactFormData = {
   services: string[];
   brief: string;
   budget: string;
+  honeypot: string;
 };
 
 type ContactFormState = {
@@ -46,6 +47,7 @@ const initialData: ContactFormData = {
   services: [],
   brief: '',
   budget: '',
+  honeypot: '',
 };
 
 export const useContactStore = create<ContactFormState>()(

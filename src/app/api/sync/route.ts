@@ -59,7 +59,7 @@ export async function GET() {
   } catch (error) {
     console.error('Sync error:', error);
     return NextResponse.json(
-      { success: false, error: String(error) },
+      { success: false, error: 'Error durante la sincronización del catálogo.' },
       { status: 500 }
     );
   }

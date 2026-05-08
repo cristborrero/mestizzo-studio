@@ -186,6 +186,17 @@ export default function MultiStepForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="relative overflow-hidden">
+        {/* Honeypot field - Hidden from real users but visible to bots */}
+        <div style={{ position: 'absolute', left: '-9999px', top: '0' }} aria-hidden="true">
+          <input
+            type="text"
+            name="honeypot"
+            tabIndex={-1}
+            autoComplete="off"
+            value={store.data.honeypot}
+            onChange={(e) => store.setField('honeypot', e.target.value)}
+          />
+        </div>
         <AnimatePresence mode="wait" custom={store.direction}>
           <motion.div
             key={store.currentStep}
