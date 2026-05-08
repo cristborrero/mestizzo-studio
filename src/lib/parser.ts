@@ -1,6 +1,8 @@
+import { ServiceCategory } from './constants';
+
 export interface ParsedService {
   code: string;
-  category: string;
+  category: ServiceCategory;
   name: string;
   description: string;
   priceUsd: number;
@@ -37,34 +39,33 @@ function parseRefPrice(raw: string): number {
   return isNaN(price) ? 0 : price;
 }
 
-function detectCategory(header: string): string | null {
+function detectCategory(header: string): ServiceCategory | null {
   const h = header.toLowerCase();
-  if (h.includes('identidad corporativa') || h.includes('branding')) return 'Identidad Corporativa y Branding';
-  if (h.includes('merchandising') || h.includes('p.o.p.')) return 'Merchandising y Material P.O.P.';
-  if (h.includes('ilustración')) return 'Ilustración';
-  if (h.includes('publicidad exterior')) return 'Publicidad Exterior';
-  if (h.includes('editorial') || h.includes('catálogos')) return 'Editorial, Catálogos e Impresos';
-  if (h.includes('audiovisual') || h.includes('fotografía')) return 'Producción Audiovisual (Fotografía y Video)';
-  if (h.includes('animación') || h.includes('edición')) return 'Animación y Edición';
-  if (h.includes('web') || h.includes('producto digital')) return 'Diseño Web y Producto Digital';
-  if (h.includes('marketing digital') || h.includes('redes sociales')) return 'Marketing Digital y Redes Sociales';
-  if (h.includes('marketing estratégico') || h.includes('growth')) return 'Marketing Estratégico y Growth';
-  if (h.includes('modelado') || h.includes('3d')) return 'Modelado y Renderizado 3D';
-  if (h.includes('inteligencia artificial') || h.includes('ai')) return 'Inteligencia Artificial (AI)';
+  if (h.includes('identidad corporativa') || h.includes('branding')) return ServiceCategory.BRANDING;
+  if (h.includes('merchandising') || h.includes('p.o.p.')) return ServiceCategory.MERCHANDISING;
+  if (h.includes('ilustración')) return ServiceCategory.ILLUSTRATION;
+  if (h.includes('publicidad exterior')) return ServiceCategory.OUTDOOR_ADS;
+  if (h.includes('editorial') || h.includes('catálogos')) return ServiceCategory.EDITORIAL;
+  if (h.includes('audiovisual') || h.includes('fotografía')) return ServiceCategory.AUDIOVISUAL;
+  if (h.includes('animación') || h.includes('edición')) return ServiceCategory.ANIMATION;
+  if (h.includes('web') || h.includes('producto digital')) return ServiceCategory.WEB;
+  if (h.includes('marketing digital') || h.includes('redes sociales')) return ServiceCategory.DIGITAL_MARKETING;
+  if (h.includes('marketing estratégico') || h.includes('growth')) return ServiceCategory.STRATEGIC_MARKETING;
+  if (h.includes('modelado') || h.includes('3d')) return ServiceCategory.MODELING_3D;
+  if (h.includes('inteligencia artificial') || h.includes('ai')) return ServiceCategory.AI;
   return null;
 }
 
 export function parseMarkdownServices(content: string): ParsedService[] {
   const parsed: ParsedService[] = [];
   const lines = content.split('\n');
-  let currentCategory = '';
+  let currentCategory: ServiceCategory | null = null;
 
   for (const line of lines) {
     const trimmed = line.trim();
 
     if (trimmed.startsWith('## ')) {
-      const detected = detectCategory(trimmed);
-      if (detected) currentCategory = detected;
+      currentCategory = detectCategory(trimmed);
       continue;
     }
 
@@ -98,7 +99,7 @@ export async function parsePriceList(): Promise<ParsedService[]> {
   const fs = await import('fs/promises');
   const path = await import('path');
 
-  const docPath = path.join(process.cwd(), '..', 'doc', 'lista_de_precios.md');
+  const docPath = path.join(process.cwd(), 'src', 'data', 'catalog.md');
 
   try {
     const content = await fs.readFile(docPath, 'utf-8');

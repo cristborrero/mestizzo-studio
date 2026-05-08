@@ -1,4 +1,12 @@
 import { create } from 'zustand';
+import { 
+  URGENCY_SURCHARGE, 
+  EDITABLE_FILES_SURCHARGE, 
+  ADDITIONAL_HOUR_RATE, 
+  DEFAULT_COP_EXCHANGE_RATE,
+  HST02_CODE,
+  ServiceCategory
+} from './constants';
 
 export interface ServiceItem {
   id: number;
@@ -15,11 +23,6 @@ export interface BusinessRules {
   editableFiles: boolean;
   additionalHours: number;
 }
-
-const URGENCY_SURCHARGE = 0.4;
-const EDITABLE_FILES_SURCHARGE = 0.25;
-const ADDITIONAL_HOUR_RATE = 35;
-const HST02_CODE = 'HST-02';
 
 interface QuoteState {
   selectedServices: ServiceItem[];
@@ -117,13 +120,14 @@ export const useQuoteStore = create<QuoteState>((set, get) => ({
   
   getTotal: () => get().getSubtotal() + get().getSurcharges(),
   
-  getTotalCop: () => get().getTotal() * 4000,
+  getTotalCop: () => {
+    const rate = Number(process.env.NEXT_PUBLIC_COP_EXCHANGE_RATE) || DEFAULT_COP_EXCHANGE_RATE;
+    return get().getTotal() * rate;
+  },
   
   shouldShowUpsell: () => {
-    const hasWebService = get().selectedServices.some(s => s.category === 'Web');
+    const hasWebService = get().selectedServices.some(s => s.category === ServiceCategory.WEB);
     const hasHosting = get().selectedServices.some(s => s.code === HST02_CODE);
     return get().showUpsell && hasWebService && !hasHosting;
   },
 }));
-
-export { URGENCY_SURCHARGE, EDITABLE_FILES_SURCHARGE, ADDITIONAL_HOUR_RATE, HST02_CODE };

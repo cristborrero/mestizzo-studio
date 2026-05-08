@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { URGENCY_SURCHARGE, EDITABLE_FILES_SURCHARGE } from '@/lib/constants';
 
 const styles = StyleSheet.create({
   page: {
@@ -207,13 +208,13 @@ export function QuotePDFDocument({
             {businessRules.urgency && (
               <View style={styles.row}>
                 <Text style={styles.serviceName}>Entrega Express (Urgencia 48h)</Text>
-                <Text style={styles.servicePrice}>+{(subtotal * 0.4).toFixed(2)}</Text>
+                <Text style={styles.servicePrice}>+{(subtotal * URGENCY_SURCHARGE).toFixed(2)}</Text>
               </View>
             )}
             {businessRules.editableFiles && (
               <View style={styles.row}>
                 <Text style={styles.serviceName}>Licencia de Archivos Editables</Text>
-                <Text style={styles.servicePrice}>+{(subtotal * 0.25).toFixed(2)}</Text>
+                <Text style={styles.servicePrice}>+{(subtotal * EDITABLE_FILES_SURCHARGE).toFixed(2)}</Text>
               </View>
             )}
           </View>
