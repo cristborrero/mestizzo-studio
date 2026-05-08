@@ -66,10 +66,9 @@ export default function FluidCanvas() {
     let cancelled = false;
     let cleanup: (() => void) | undefined;
 
+    const isMobile = window.innerWidth < 768;
+
     // The wrapper reads SPLAT_COLOR by reference inside its color generator,
-    // so mutating this single object's r/g/b before each splat makes the
-    // simulation pick the new color on the next frame. That's how we
-    // implement a multi-color palette through an API that only takes one.
     const palette: FluidColor[] = [
       { r: 1.0, g: 0.0, b: 0.28 }, // #fe0048 — dominant
       { r: 1.0, g: 0.0, b: 0.28 },
@@ -85,8 +84,6 @@ export default function FluidCanvas() {
     let lastColorChange = 0;
     const pickNextColor = () => {
       const now = performance.now();
-      // Throttle: each gesture lays down a streak of one color before
-      // switching. Without this you'd get a rainbow on every mousemove.
       if (now - lastColorChange < 220) return;
       lastColorChange = now;
       const c = palette[Math.floor(Math.random() * palette.length)];
@@ -96,118 +93,93 @@ export default function FluidCanvas() {
     };
 
     const fit = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Capping DPR at 1.0 on mobile to save GPU/Main-thread cycles.
+      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(window.innerWidth * dpr);
       canvas.height = Math.floor(window.innerHeight * dpr);
     };
 
     fit();
 
-    import('webgl-fluid')
-      .then((mod) => {
-        if (cancelled) return;
-        const WebGLFluid = (mod.default ?? mod) as FluidInit;
+    // PERFORMANCE: Delay WebGL initialization to prioritize LCP (text rendering).
+    const initTimeout = setTimeout(() => {
+      import('webgl-fluid')
+        .then((mod) => {
+          if (cancelled) return;
+          const WebGLFluid = (mod.default ?? mod) as FluidInit;
 
-        WebGLFluid(canvas, {
-          TRIGGER: 'hover',
-          IMMEDIATE: false,
-          AUTO: false,
-          INTERVAL: 0,
-          SIM_RESOLUTION: 128,
-          DYE_RESOLUTION: 1024,
-          DENSITY_DISSIPATION: 2.2,
-          VELOCITY_DISSIPATION: 1.0,
-          PRESSURE: 0.8,
-          PRESSURE_ITERATIONS: 20,
-          CURL: 22,
-          SPLAT_RADIUS: 0.1,
-          SPLAT_FORCE: 5000,
-          SPLAT_COUNT: 0,
-          SHADING: true,
-          COLORFUL: false,
-          COLOR_UPDATE_SPEED: 0,
-          PAUSED: false,
-          BACK_COLOR: { r: 255, g: 255, b: 255 },
-          TRANSPARENT: false,
-          BLOOM: false,
-          SUNRAYS: false,
-          SPLAT_COLOR: splatColor,
+          WebGLFluid(canvas, {
+            TRIGGER: 'hover',
+            IMMEDIATE: false,
+            AUTO: false,
+            INTERVAL: 0,
+            // Drastically lower settings for mobile to fix TBT.
+            SIM_RESOLUTION: isMobile ? 32 : 128,
+            DYE_RESOLUTION: isMobile ? 512 : 1024,
+            DENSITY_DISSIPATION: isMobile ? 3.0 : 2.2, // Faster cleanup on mobile
+            VELOCITY_DISSIPATION: 1.0,
+            PRESSURE: 0.8,
+            PRESSURE_ITERATIONS: isMobile ? 4 : 20, // Critical for TBT reduction
+            CURL: isMobile ? 15 : 22,
+            SPLAT_RADIUS: 0.1,
+            SPLAT_FORCE: 5000,
+            SPLAT_COUNT: 0,
+            SHADING: !isMobile, // Disable shading on mobile for extra speed
+            COLORFUL: false,
+            COLOR_UPDATE_SPEED: 0,
+            PAUSED: false,
+            BACK_COLOR: { r: 255, g: 255, b: 255 },
+            TRANSPARENT: false,
+            BLOOM: false,
+            SUNRAYS: false,
+            SPLAT_COLOR: splatColor,
+          });
+
+          const forwardMouse = (e: MouseEvent) => {
+            pickNextColor();
+            const ev = new MouseEvent('mousemove', {
+              clientX: e.clientX,
+              clientY: e.clientY,
+              bubbles: false,
+            });
+            canvas.dispatchEvent(ev);
+          };
+
+          const forwardTouch = (e: TouchEvent) => {
+            pickNextColor();
+            if (e.touches.length === 0) return;
+            const t = e.touches[0];
+            const ev = new MouseEvent('mousemove', {
+              clientX: t.clientX,
+              clientY: t.clientY,
+              bubbles: false,
+            });
+            canvas.dispatchEvent(ev);
+          };
+
+          window.addEventListener('mousemove', forwardMouse, { passive: true });
+          window.addEventListener('touchmove', forwardTouch, { passive: true });
+          window.addEventListener('resize', fit);
+
+          cleanup = () => {
+            window.removeEventListener('mousemove', forwardMouse);
+            window.removeEventListener('touchmove', forwardTouch);
+            window.removeEventListener('resize', fit);
+            const gl =
+              canvas.getContext('webgl2') ?? canvas.getContext('webgl');
+            (
+              gl as WebGLRenderingContext | null
+            )?.getExtension('WEBGL_lose_context')?.loseContext();
+          };
+        })
+        .catch((err) => {
+          console.warn('[FluidCanvas] webgl-fluid failed to load:', err);
         });
-
-        // Forward window mousemove → canvas mousemove.
-        //
-        // Why: the wrapper's internal handler is attached to the canvas
-        // itself with a 500ms setTimeout delay AND only fires when the
-        // pointer is directly over the canvas. In a Hero with overlay
-        // text/buttons that have `pointer-events:auto`, those elements
-        // swallow the mousemove and the simulation goes silent — that's
-        // why it feels laggy and "wakes up" only over empty space.
-        //
-        // We dispatch a synthetic MouseEvent at the canvas with the right
-        // offsetX/offsetY so the wrapper's handler runs as if the cursor
-        // were always directly on the canvas. This also bypasses the
-        // 500ms init delay.
-        const forwardMouse = (e: MouseEvent) => {
-          pickNextColor();
-          const rect = canvas.getBoundingClientRect();
-          const ev = new MouseEvent('mousemove', {
-            clientX: e.clientX,
-            clientY: e.clientY,
-            bubbles: false,
-          });
-          // The wrapper reads e.offsetX / e.offsetY. These are derived
-          // from clientX/Y minus the target's bounding rect, but since we
-          // dispatch at the canvas, offset is auto-computed by the browser.
-          // We just need clientX/Y to land inside canvas bounds — the
-          // canvas covers the viewport (inset-0) so they always do.
-          void rect;
-          canvas.dispatchEvent(ev);
-        };
-
-        const forwardTouch = (e: TouchEvent) => {
-          pickNextColor();
-          if (e.touches.length === 0) return;
-          // Touch events are forwarded by re-dispatching on the canvas.
-          // Most browsers don't allow constructing TouchEvent directly,
-          // so we synthesise a MouseEvent equivalent — the wrapper has
-          // separate touch handlers but mouse path is enough for visual
-          // continuity on hybrid devices.
-          const t = e.touches[0];
-          const ev = new MouseEvent('mousemove', {
-            clientX: t.clientX,
-            clientY: t.clientY,
-            bubbles: false,
-          });
-          canvas.dispatchEvent(ev);
-        };
-
-        window.addEventListener('mousemove', forwardMouse, { passive: true });
-        window.addEventListener('touchmove', forwardTouch, { passive: true });
-        window.addEventListener('resize', fit);
-
-        cleanup = () => {
-          window.removeEventListener('mousemove', forwardMouse);
-          window.removeEventListener('touchmove', forwardTouch);
-          window.removeEventListener('resize', fit);
-          // Pavel's loop holds a rAF we can't cancel from outside, so we
-          // lose the WebGL context — that halts rendering and frees GPU
-          // memory when the user navigates away (Chrome caps at ~16
-          // contexts; without this you'd hit the limit after a few page
-          // changes in a SPA).
-          const gl =
-            canvas.getContext('webgl2') ?? canvas.getContext('webgl');
-          (
-            gl as WebGLRenderingContext | null
-          )?.getExtension('WEBGL_lose_context')?.loseContext();
-        };
-      })
-      .catch((err) => {
-        // Fail silently — Hero still renders, just without the fluid.
-        console.warn('[FluidCanvas] webgl-fluid failed to load:', err);
-      });
+    }, isMobile ? 2000 : 500); // 2s delay on mobile, 500ms on desktop
 
     return () => {
       cancelled = true;
+      clearTimeout(initTimeout);
       cleanup?.();
     };
   }, []);
