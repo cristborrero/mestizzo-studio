@@ -29,8 +29,8 @@ export async function GET() {
               name: service.name,
               description: service.description,
               category: service.category,
-              priceUsd: service.priceUsd,
-              priceColRef: service.priceColRef,
+              priceUsd: service.priceUsd.toFixed(2),
+              priceColRef: service.priceColRef.toFixed(2),
             })
             .where(eq(services.code, service.code));
           results.updated++;
@@ -41,8 +41,8 @@ export async function GET() {
             category: service.category,
             name: service.name,
             description: service.description,
-            priceUsd: service.priceUsd,
-            priceColRef: service.priceColRef,
+            priceUsd: service.priceUsd.toFixed(2),
+            priceColRef: service.priceColRef.toFixed(2),
           });
           results.inserted++;
         }
