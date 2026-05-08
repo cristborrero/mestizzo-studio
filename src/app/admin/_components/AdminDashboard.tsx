@@ -6,12 +6,12 @@ import { Package, Tag, TrendingUp, DollarSign, FileText, Layers, ArrowUpRight } 
 import type { QuoteRequest } from '@/lib/db/schema';
 
 interface Stats {
-  totalServices: number;
-  avgPrice: number;
-  catalogValue: number;
-  totalCategories: number;
   totalQuotes: number;
   totalRevenue: number;
+  avgTicket: number;
+  totalServices: number;
+  catalogValue: number;
+  totalCategories: number;
 }
 
 interface CategoryCount {
@@ -55,13 +55,16 @@ function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: {
   return <span className="font-black">{prefix}{formatted}{suffix}</span>;
 }
 
-const STAT_CARDS = [
-  { key: 'totalServices',  label: 'SERVICIOS',     icon: Package,    prefix: '',   suffix: '',  decimals: 0 },
-  { key: 'totalCategories',label: 'CATEGORÍAS',    icon: Layers,     prefix: '',   suffix: '',  decimals: 0 },
-  { key: 'avgPrice',       label: 'PROM. USD',     icon: Tag,        prefix: '$',  suffix: '',  decimals: 2 },
-  { key: 'catalogValue',   label: 'VALOR CAT.',    icon: DollarSign, prefix: '$',  suffix: '',  decimals: 0 },
-  { key: 'totalQuotes',    label: 'COTIZACIONES',  icon: FileText,   prefix: '',   suffix: '',  decimals: 0 },
-  { key: 'totalRevenue',   label: 'REVENUE',       icon: TrendingUp, prefix: '$',  suffix: '',  decimals: 2 },
+const PERFORMANCE_CARDS = [
+  { key: 'totalRevenue',   label: 'REVENUE TOTAL',     icon: TrendingUp, prefix: '$',  suffix: '',  decimals: 2 },
+  { key: 'totalQuotes',    label: 'COTIZACIONES',      icon: FileText,   prefix: '',   suffix: '',  decimals: 0 },
+  { key: 'avgTicket',      label: 'TICKET PROMEDIO',   icon: DollarSign, prefix: '$',  suffix: '',  decimals: 2 },
+] as const;
+
+const INVENTORY_CARDS = [
+  { key: 'totalServices',  label: 'ITEMS EN CATÁLOGO', icon: Package,    prefix: '',   suffix: '',  decimals: 0 },
+  { key: 'totalCategories',label: 'CATEGORÍAS',        icon: Layers,     prefix: '',   suffix: '',  decimals: 0 },
+  { key: 'catalogValue',   label: 'VALOR POTENCIAL',   icon: Tag,        prefix: '$',  suffix: '',  decimals: 0 },
 ] as const;
 
 const container = {
@@ -84,49 +87,90 @@ export function AdminDashboard({ userName, stats, categoryCounts, recentQuotes }
       {/* Header */}
       <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-black tracking-tight leading-none uppercase">
-          HOLA, <span className="text-outline">{userName.split(' ')[0]}</span>
+          CENTRO DE <span className="text-outline">MANDO</span>
         </h1>
         <div className="flex items-center gap-4">
           <div className="h-px w-12 bg-accent" />
           <p className="text-[10px] font-black tracking-[0.4em] opacity-40 uppercase">
-            RESUMEN OPERATIVO / MESTIZZO STUDIO
+            MESTIZZO STUDIO / {userName.toUpperCase()}
           </p>
         </div>
       </div>
 
-      {/* Stats grid */}
-      <motion.div
-        className="border-grid grid grid-cols-2 lg:grid-cols-3"
-        variants={container}
-        initial="hidden"
-        animate="visible"
-      >
-        {STAT_CARDS.map(({ key, label, icon: Icon, prefix, suffix, decimals }) => (
-          <motion.div
-            key={key}
-            variants={item}
-            className="group relative p-10 transition-colors hover:bg-muted"
-          >
-            <div className="mb-8 flex items-center justify-between">
-              <span className="text-[10px] font-black tracking-[0.2em] opacity-40">{label}</span>
-              <Icon size={14} className="opacity-20 group-hover:opacity-100 transition-opacity" />
-            </div>
-            <div className="text-4xl">
-              <AnimatedNumber
-                value={stats[key]}
-                prefix={prefix}
-                suffix={suffix}
-                decimals={decimals}
-              />
-            </div>
-            <div className="absolute bottom-4 right-4 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1">
-              <ArrowUpRight size={16} className="text-accent" />
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+      {/* Primary Performance Stats */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-[10px] font-black tracking-[0.3em] opacity-30 uppercase">Desempeño Comercial</h2>
+          <div className="h-px flex-1 bg-border/50" />
+        </div>
+        <motion.div
+          className="border-grid grid grid-cols-1 md:grid-cols-3"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
+          {PERFORMANCE_CARDS.map(({ key, label, icon: Icon, prefix, suffix, decimals }) => (
+            <motion.div
+              key={key}
+              variants={item}
+              className="group relative p-10 transition-colors hover:bg-muted border-r border-b md:border-b-0 border-border"
+            >
+              <div className="mb-8 flex items-center justify-between">
+                <span className="text-[10px] font-black tracking-[0.2em] opacity-40">{label}</span>
+                <Icon size={14} className="text-accent opacity-40 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="text-5xl tracking-tighter">
+                <AnimatedNumber
+                  value={stats[key as keyof Stats]}
+                  prefix={prefix}
+                  suffix={suffix}
+                  decimals={decimals}
+                />
+              </div>
+              <div className="absolute bottom-4 right-4 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1">
+                <ArrowUpRight size={16} className="text-accent" />
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+      {/* Secondary Inventory Stats */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-[10px] font-black tracking-[0.3em] opacity-30 uppercase">Infraestructura del Catálogo</h2>
+          <div className="h-px flex-1 bg-border/50" />
+        </div>
+        <motion.div
+          className="grid grid-cols-2 lg:grid-cols-3 gap-0"
+          initial="hidden"
+          animate="visible"
+          variants={container}
+        >
+          {INVENTORY_CARDS.map(({ key, label, icon: Icon, prefix, suffix, decimals }) => (
+            <motion.div
+              key={key}
+              variants={item}
+              className="group p-8 border-r border-b last:border-r-0 border-border/40 hover:bg-muted/30 transition-all"
+            >
+              <div className="flex items-center gap-3 opacity-40 group-hover:opacity-100 transition-opacity mb-2">
+                <Icon size={12} />
+                <span className="text-[9px] font-bold tracking-widest uppercase">{label}</span>
+              </div>
+              <div className="text-2xl opacity-60 group-hover:opacity-100 transition-all">
+                <AnimatedNumber
+                  value={stats[key as keyof Stats]}
+                  prefix={prefix}
+                  suffix={suffix}
+                  decimals={decimals}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 pt-8 border-t border-border">
         {/* Category breakdown */}
         <motion.div
           className="space-y-8"
@@ -135,8 +179,8 @@ export function AdminDashboard({ userName, stats, categoryCounts, recentQuotes }
           transition={{ delay: 0.6 }}
         >
           <div className="flex items-center justify-between border-b border-border pb-4">
-            <h2 className="text-xs font-black tracking-[0.3em]">POR CATEGORÍA</h2>
-            <span className="text-[10px] font-medium opacity-40">DISTRIBUCIÓN</span>
+            <h2 className="text-xs font-black tracking-[0.3em]">EQUILIBRIO DEL CATÁLOGO</h2>
+            <span className="text-[10px] font-medium opacity-40">SERVICIOS / CAT</span>
           </div>
           <div className="space-y-6">
             {categoryCounts.map(({ category, count }) => (
@@ -166,12 +210,12 @@ export function AdminDashboard({ userName, stats, categoryCounts, recentQuotes }
           transition={{ delay: 0.7 }}
         >
           <div className="flex items-center justify-between border-b border-border pb-4">
-            <h2 className="text-xs font-black tracking-[0.3em]">COTIZACIONES RECIENTES</h2>
-            <span className="text-[10px] font-medium opacity-40">ÚLTIMAS 5</span>
+            <h2 className="text-xs font-black tracking-[0.3em]">FLUJO DE ACTIVIDAD</h2>
+            <span className="text-[10px] font-medium opacity-40">ÚLTIMAS 5 OPERACIONES</span>
           </div>
           {recentQuotes.length === 0 ? (
             <div className="flex h-32 items-center justify-center border border-dashed border-border">
-              <p className="text-[10px] font-black tracking-widest opacity-20 uppercase">No hay actividad</p>
+              <p className="text-[10px] font-black tracking-widest opacity-20 uppercase">Esperando primera transacción...</p>
             </div>
           ) : (
             <div className="divide-y divide-border">

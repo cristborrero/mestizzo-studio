@@ -170,12 +170,12 @@ export function ServicesManager({ initialServices }: Props) {
       </div>
 
       {/* Grid / Table Replacement */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <AnimatePresence mode="popLayout">
           {filtered.length === 0 ? (
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="py-40 text-center bg-surface rounded-[3rem] border border-dashed border-border"
+              className="py-40 text-center bg-surface rounded-[3rem] border border-dashed border-border col-span-full"
             >
               <p className="text-[10px] font-black tracking-[0.4em] opacity-20 uppercase">No results found in this category</p>
             </motion.div>
@@ -187,28 +187,28 @@ export function ServicesManager({ initialServices }: Props) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="group flex flex-col md:flex-row items-center justify-between p-10 bg-surface rounded-[2.5rem] border border-transparent hover:border-accent transition-all duration-500"
+                className="group flex flex-col md:flex-row items-center justify-between p-8 bg-surface rounded-[2rem] border border-transparent hover:border-accent transition-all duration-500"
               >
                 <div className="flex items-center gap-12 w-full">
-                  <div className="hidden lg:flex h-16 w-16 items-center justify-center rounded-2xl bg-background border border-border text-[10px] font-black opacity-40 group-hover:opacity-100 group-hover:border-accent transition-all">
+                  <div className="hidden 2xl:flex h-14 w-14 items-center justify-center rounded-2xl bg-background border border-border text-[10px] font-black opacity-40 group-hover:opacity-100 group-hover:border-accent transition-all shrink-0">
                     {s.code}
                   </div>
-                  <div className="space-y-2 flex-1">
-                    <h3 className="text-2xl font-black uppercase tracking-tight group-hover:text-accent transition-colors leading-none">
+                  <div className="space-y-1 flex-1 min-w-0">
+                    <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tight group-hover:text-accent transition-colors leading-tight truncate">
                       {s.name}
                     </h3>
-                    <div className="flex items-center gap-4">
-                      <span className="text-[10px] font-black tracking-[0.2em] text-accent uppercase">{s.category}</span>
-                      <div className="h-1 w-1 rounded-full bg-border" />
-                      <p className="text-xs font-medium text-secondary truncate max-w-md">{s.description}</p>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] font-black tracking-[0.2em] text-accent uppercase shrink-0">{s.category}</span>
+                      <div className="h-1 w-1 rounded-full bg-border shrink-0" />
+                      <p className="text-[10px] font-medium text-secondary truncate">{s.description}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between w-full md:w-auto mt-8 md:mt-0 gap-12">
+                <div className="flex items-center justify-between w-full md:w-auto mt-6 md:mt-0 gap-8 shrink-0">
                   <div className="text-right">
-                    <div className="text-3xl font-black tracking-tighter leading-none">${Number(s.priceUsd).toLocaleString()}</div>
-                    <div className="text-[10px] font-bold opacity-30 tracking-widest uppercase mt-1">
+                    <div className="text-2xl lg:text-3xl font-black tracking-tighter leading-none">${Number(s.priceUsd).toLocaleString()}</div>
+                    <div className="text-[9px] font-bold opacity-30 tracking-widest uppercase mt-1">
                       {s.priceColRef ? `REF $${Number(s.priceColRef).toLocaleString('es-CO')} COP` : '—'}
                     </div>
                   </div>
