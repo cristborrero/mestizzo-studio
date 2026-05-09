@@ -53,7 +53,7 @@ export default function ServiceCard({ id, title, desc, icon, size, index }: Serv
         </div>
         
         <Link 
-          href="/quote"
+          href="/servicios"
           className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-foreground group-hover:text-white group-hover:gap-6 transition-all"
         >
           Ver Detalles <ArrowRight className="h-4 w-4 text-accent" />

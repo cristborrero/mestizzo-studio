@@ -26,15 +26,19 @@ export default function PhilosophySection() {
             Somos <span className="text-accent italic">legado.</span>
           </h2>
           
-          <p className="max-w-2xl mx-auto text-xl md:text-2xl font-medium text-white/60 mb-20">
-            En MESTIZZO Studio, cada proyecto es una pieza única de artesanía digital. Limitamos nuestros clientes para garantizar una ejecución impecable y resultados de clase mundial.
+          <p className="max-w-2xl mx-auto text-xl md:text-2xl font-medium text-white/60 mb-8">
+            Trabajamos con pocas marcas porque cada proyecto merece todo lo que tenemos. No somos un proveedor de servicios — somos el equipo de diseño que querías tener adentro.
+          </p>
+
+          <p className="max-w-xl mx-auto text-lg font-black uppercase tracking-widest text-white/40 mb-20">
+            Las marcas que perduran no se fabrican. Se construyen.
           </p>
 
           <Link
             href="/contact"
             className="inline-flex items-center gap-4 bg-accent text-white px-12 py-7 rounded-full text-sm font-black uppercase tracking-widest hover:scale-105 transition-all duration-500 shadow-2xl shadow-accent/20"
           >
-            Comenzar un Proyecto
+            Iniciá tu proyecto
             <ArrowRight className="h-5 w-5" />
           </Link>
         </motion.div>

@@ -47,7 +47,7 @@ export default function HomeHero() {
             variants={fadeUp}
             className="max-w-xl text-xl md:text-2xl font-medium leading-snug text-secondary"
           >
-            Transformamos la visión de marcas boutique en legados digitales a través del diseño de autor y tecnología de vanguardia.
+            Creamos identidades digitales con criterio de autor. Para founders que construyen para perdurar.
           </motion.p>
           
           <motion.div variants={fadeUp} className="pointer-events-auto">
