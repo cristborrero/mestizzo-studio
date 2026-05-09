@@ -17,7 +17,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       exit={{ opacity: 0, y: -8 }}
       transition={{
         duration: duration.page,
-        ease:     ease.page as number[],
+        ease:     ease.page as [number, number, number, number],
       }}
     >
       {children}

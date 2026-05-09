@@ -20,7 +20,7 @@ export const duration = {
 
 const baseTransition: Transition = {
   duration: duration.base,
-  ease:     ease.text as number[],
+  ease:     ease.text as [number, number, number, number],
 };
 
 export const fadeUp: Variants = {
@@ -36,7 +36,7 @@ export const fadeIn: Variants = {
   hidden:  { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: duration.fast, ease: ease.micro as number[] },
+    transition: { duration: duration.fast, ease: ease.micro as [number, number, number, number] },
   },
 };
 
@@ -45,7 +45,7 @@ export const scaleSettle: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: duration.base, ease: ease.material as number[] },
+    transition: { duration: duration.base, ease: ease.material as [number, number, number, number] },
   },
 };
 
@@ -54,7 +54,7 @@ export const slideInLeft: Variants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: duration.fast, ease: ease.text as number[] },
+    transition: { duration: duration.fast, ease: ease.text as [number, number, number, number] },
   },
 };
 
@@ -62,13 +62,13 @@ export const drawLine: Variants = {
   hidden:  { scaleX: 0, originX: 0 },
   visible: {
     scaleX: 1,
-    transition: { duration: duration.slow, ease: ease.material as number[] },
+    transition: { duration: duration.slow, ease: ease.material as [number, number, number, number] },
   },
 };
 
 export const headlineFocus: Variants = {
   hidden:  { opacity: 0, y: 24, filter: "blur(8px)" },
-  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.0, ease: ease.text as number[] } },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.0, ease: ease.text as [number, number, number, number] } },
 };
 
 export const staggerContainer: Variants = {
