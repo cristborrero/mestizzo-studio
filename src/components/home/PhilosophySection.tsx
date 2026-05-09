@@ -26,11 +26,11 @@ export default function PhilosophySection() {
             Somos <span className="text-accent italic">legado.</span>
           </h2>
           
-          <p className="max-w-2xl mx-auto text-xl md:text-2xl font-medium text-white/60 mb-8">
-            Trabajamos con pocas marcas porque cada proyecto merece todo lo que tenemos. No somos un proveedor de servicios — somos el equipo de diseño que querías tener adentro.
+          <p className="max-w-2xl mx-auto text-xl md:text-2xl font-light text-white/60 mb-12">
+            Trabajamos con pocas marcas porque cada proyecto merece todo lo que tenemos. No hacemos templates. No tenemos procesos en serie. Cada identidad que sale de aquí lleva tiempo, criterio y una obsesión genuina por el detalle.
           </p>
 
-          <p className="max-w-xl mx-auto text-lg font-black uppercase tracking-widest text-white/40 mb-20">
+          <p className="text-white/30 text-sm font-black uppercase tracking-[0.4em] mb-20">
             Las marcas que perduran no se fabrican. Se construyen.
           </p>
 
@@ -39,7 +39,7 @@ export default function PhilosophySection() {
             className="inline-flex items-center gap-4 bg-accent text-white px-12 py-7 rounded-full text-sm font-black uppercase tracking-widest hover:scale-105 transition-all duration-500 shadow-2xl shadow-accent/20"
           >
             Iniciá tu proyecto
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </Link>
         </motion.div>
       </div>

@@ -4,6 +4,7 @@
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
   --color-surface: var(--color-surface);
+  --color-surface-warm: var(--color-surface-warm);
   --color-muted: var(--color-muted);
   --color-border: var(--color-border);
   --color-primary: var(--color-primary);
@@ -27,6 +28,7 @@
   --color-primary: #151717;
   --color-on-primary: #ffffff;
   --color-secondary: #666666;
+  --color-surface-warm: #f1efea;
   --color-accent: #FE0048;
   --color-accent-hover: #E5003F;
   --color-destructive: #ef4444;

@@ -8,8 +8,21 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CheckoutPage() {
-  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test';
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
   const { selectedServices, businessRules, getTotal, getSubtotal, getSurcharges } = useQuoteStore();
+
+  if (!clientId) {
+    return (
+      <main className="min-h-screen bg-background flex flex-col items-center justify-center px-6 text-center">
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-accent mb-4">Pago no disponible</p>
+        <h1 className="text-3xl font-light mb-6">El proceso de pago está temporalmente fuera de servicio.</h1>
+        <p className="text-secondary mb-8">Escribinos directamente y gestionamos tu proyecto de forma manual.</p>
+        <a href="mailto:infomestizzo@gmail.com" className="bg-foreground text-background px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-accent transition-colors">
+          Contactar ahora
+        </a>
+      </main>
+    );
+  }
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'processing' | 'success'>('pending');
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const [pdfReady, setPdfReady] = useState(false);

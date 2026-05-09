@@ -123,7 +123,7 @@ export default function MultiStepForm() {
             transition={{ duration: 0.6, ease: EASE }}
             className="max-w-xl"
           >
-            <h2 className="text-5xl md:text-7xl font-serif italic mb-6 text-foreground">
+            <h2 className="text-5xl md:text-7xl font-heading italic mb-6 text-foreground">
               Gracias, {store.data.name.split(" ")[0]}.
             </h2>
             <p className="text-xl text-secondary font-light mb-12 leading-relaxed">
@@ -251,11 +251,14 @@ export default function MultiStepForm() {
               }`}
             >
               {store.isSubmitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  <span className="sr-only">Enviando solicitud...</span>
+                </>
               ) : (
                 <>
                   Enviar Solicitud
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </>
               )}
             </button>
@@ -288,11 +291,16 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Name */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-name" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Nombre completo *
         </label>
         <input
+          id="field-name"
           type="text"
+          required
+          aria-required="true"
+          aria-invalid={touched.name && !!errors.name}
+          aria-describedby={touched.name && errors.name ? "error-name" : undefined}
           value={data.name}
           onChange={(e) => setField("name", e.target.value)}
           onBlur={() => markTouched("name")}
@@ -304,6 +312,8 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.name && errors.name && (
             <motion.p
+              id="error-name"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -317,11 +327,16 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Email */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-email" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Email corporativo *
         </label>
         <input
+          id="field-email"
           type="email"
+          required
+          aria-required="true"
+          aria-invalid={touched.email && !!errors.email}
+          aria-describedby={touched.email && errors.email ? "error-email" : undefined}
           value={data.email}
           onChange={(e) => setField("email", e.target.value)}
           onBlur={() => markTouched("email")}
@@ -333,6 +348,8 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.email && errors.email && (
             <motion.p
+              id="error-email"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -346,11 +363,14 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Phone */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-phone" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Teléfono
         </label>
         <input
+          id="field-phone"
           type="tel"
+          aria-invalid={touched.phone && !!errors.phone}
+          aria-describedby={touched.phone && errors.phone ? "error-phone" : undefined}
           value={data.phone}
           onChange={(e) => setField("phone", e.target.value)}
           onBlur={() => markTouched("phone")}
@@ -362,6 +382,8 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.phone && errors.phone && (
             <motion.p
+              id="error-phone"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -375,10 +397,11 @@ function StepOne({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Company */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-company" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Empresa
         </label>
         <input
+          id="field-company"
           type="text"
           value={data.company}
           onChange={(e) => setField("company", e.target.value)}
@@ -405,13 +428,21 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
       </div>
 
       {/* Services Chips */}
-      <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+      <motion.div
+        variants={itemVariants}
+        role="group"
+        aria-labelledby="services-group-label"
+        aria-describedby={touched.services && errors.services ? "error-services" : undefined}
+        className="flex flex-wrap gap-3"
+      >
+        <span id="services-group-label" className="sr-only">Servicios requeridos. Selecciona uno o más.</span>
         {SERVICES.map((service) => {
           const isSelected = data.services.includes(service);
           return (
             <motion.button
               key={service}
               type="button"
+              aria-pressed={isSelected}
               whileHover={isSelected ? {} : { scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => toggleService(service)}
@@ -428,6 +459,8 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.services && errors.services && (
             <motion.p
+              id="error-services"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -441,10 +474,15 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Brief */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-brief" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Cuéntanos sobre tu proyecto *
         </label>
         <textarea
+          id="field-brief"
+          required
+          aria-required="true"
+          aria-invalid={touched.brief && !!errors.brief}
+          aria-describedby={touched.brief && errors.brief ? "error-brief" : undefined}
           value={data.brief}
           onChange={(e) => setField("brief", e.target.value)}
           onBlur={() => markTouched("brief")}
@@ -457,6 +495,8 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.brief && errors.brief && (
             <motion.p
+              id="error-brief"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -470,10 +510,15 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
 
       {/* Budget */}
       <motion.div variants={itemVariants} className="flex flex-col gap-3">
-        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+        <label htmlFor="field-budget" className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
           Presupuesto estimado *
         </label>
         <select
+          id="field-budget"
+          required
+          aria-required="true"
+          aria-invalid={touched.budget && !!errors.budget}
+          aria-describedby={touched.budget && errors.budget ? "error-budget" : undefined}
           value={data.budget}
           onChange={(e) => setField("budget", e.target.value)}
           onBlur={() => markTouched("budget")}
@@ -489,6 +534,8 @@ function StepTwo({ variants, itemVariants }: { variants: any; itemVariants: any 
         <AnimatePresence>
           {touched.budget && errors.budget && (
             <motion.p
+              id="error-budget"
+              role="alert"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}

@@ -8,7 +8,9 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
-  { href: "/quote", label: "Cotizador" },
+  { href: "/trabajo", label: "Trabajo" },
+  { href: "/estudio", label: "Estudio" },
+  { href: "/servicios", label: "Servicios" },
 ];
 
 export function Navbar() {
@@ -20,6 +22,14 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileOpen) setMobileOpen(false);
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [mobileOpen]);
 
   return (
     <header
@@ -48,7 +58,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Navegación principal" className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -70,9 +80,15 @@ export function Navbar() {
 
           <button
             className="p-1 text-foreground"
+            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
             onClick={() => setMobileOpen((p) => !p)}
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen
+              ? <X className="h-5 w-5" aria-hidden="true" />
+              : <Menu className="h-5 w-5" aria-hidden="true" />
+            }
           </button>
         </div>
       </div>
@@ -81,12 +97,13 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             className="fixed inset-0 bg-background z-40 p-8 pt-32 flex flex-col gap-12"
           >
-            <nav className="flex flex-col gap-6">
+            <nav aria-label="Menú móvil" className="flex flex-col gap-6">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /quote
+Disallow: /checkout
+Disallow: /admin
+
+Sitemap: https://mestizzo-studio.vercel.app/sitemap.xml
