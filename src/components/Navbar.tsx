@@ -8,10 +8,11 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
-  { href: "/trabajo", label: "Trabajo" },
-  { href: "/servicios", label: "Servicios" },
-  { href: "/mercados", label: "Mercados" },
-  { href: "/estudio", label: "Estudio" },
+  { href: "/trabajo", label: "Trabajo", accent: false },
+  { href: "/servicios", label: "Servicios", accent: false },
+  { href: "/mercados", label: "Mercados", accent: false },
+  { href: "/estudio", label: "Estudio", accent: false },
+  { href: "/quote", label: "Cotizador", accent: true },
 ];
 
 export function Navbar() {
@@ -64,7 +65,11 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-semibold text-secondary transition-colors hover:text-foreground"
+              className={
+                link.accent
+                  ? "text-sm font-black text-accent transition-colors hover:text-foreground"
+                  : "text-sm font-semibold text-secondary transition-colors hover:text-foreground"
+              }
             >
               {link.label}
             </Link>
@@ -109,7 +114,11 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-xs font-black uppercase tracking-[0.2em] text-secondary hover:text-foreground transition-colors"
+                  className={
+                    link.accent
+                      ? "text-xs font-black uppercase tracking-[0.2em] text-accent hover:text-foreground transition-colors"
+                      : "text-xs font-black uppercase tracking-[0.2em] text-secondary hover:text-foreground transition-colors"
+                  }
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

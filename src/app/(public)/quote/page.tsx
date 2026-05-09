@@ -93,16 +93,24 @@ export default function QuoteBuilder() {
           >
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-accent mb-4 block">
-                Quote Builder — 2026
+                Cotizador — 2026
               </span>
               <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
-                Configure Your<br />
-                <span className="text-outline">Investment.</span>
+                Armá tu<br />
+                <span className="text-outline">presupuesto.</span>
               </h1>
             </div>
-            <p className="max-w-md text-lg text-secondary font-medium leading-snug">
-              Selecciona los servicios que necesitas para tu proyecto. El presupuesto se ajusta en tiempo real basado en tus requerimientos técnicos.
-            </p>
+            <div className="max-w-md">
+              <p className="text-lg text-secondary font-medium leading-snug mb-4">
+                Seleccioná los servicios que necesitás, configurá el alcance y avanzá al pago. Precios reales, sin intermediarios.
+              </p>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary/60">
+                ¿Preferís hablar primero?{" "}
+                <a href="/contact" className="text-accent hover:underline underline-offset-4">
+                  Contactanos →
+                </a>
+              </p>
+            </div>
           </motion.div>
         </header>
 

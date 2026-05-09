@@ -15,7 +15,6 @@ const SERVICIOS = [
     tagline: "Identidad que no se olvida.",
     desc: "Sistemas de identidad visual que capturan la esencia de marcas audaces. Estrategia de posicionamiento, manuales de marca y naming para empresas que quieren liderar su categoría.",
     entregables: ["Identidad visual completa", "Manual de marca", "Naming & tagline", "Posicionamiento estratégico", "Brandbook editorial"],
-    desde: "USD 3,500",
   },
   {
     slug: "web",
@@ -25,7 +24,6 @@ const SERVICIOS = [
     tagline: "Presencia digital de autor.",
     desc: "Experiencias digitales a medida. Desde landing pages inmersivas hasta ecosistemas e-commerce de alto rendimiento. Diseño y desarrollo en una sola firma.",
     entregables: ["Diseño UX/UI a medida", "Desarrollo Next.js / React", "E-commerce integrado", "Optimización de performance", "CMS editable"],
-    desde: "USD 5,000",
   },
   {
     slug: "ai",
@@ -35,7 +33,6 @@ const SERVICIOS = [
     tagline: "Inteligencia que escala tu negocio.",
     desc: "Automatización inteligente y agentes autónomos diseñados para amplificar la operatividad de negocios modernos sin perder la voz de marca.",
     entregables: ["Agentes autónomos a medida", "Automatización de flujos", "Chatbots de marca", "Integración con CRM/ERP", "Consultoría de stack AI"],
-    desde: "USD 4,000",
   },
   {
     slug: "growth",
@@ -45,7 +42,6 @@ const SERVICIOS = [
     tagline: "Crecimiento con criterio.",
     desc: "Estrategias de contenido y pauta que construyen un legado digital sostenible. No perseguimos métricas vacías — construimos audiencias reales.",
     entregables: ["Estrategia de contenidos", "Gestión de pauta digital", "SEO técnico y editorial", "Auditoría de presencia", "Reporting mensual"],
-    desde: "USD 1,800/mes",
   },
   {
     slug: "media",
@@ -55,7 +51,6 @@ const SERVICIOS = [
     tagline: "Contenido que respira calidad.",
     desc: "Captura de producto, video corporativo y showreels con estética cinematográfica. Producción que transforma lo que una marca hace en lo que quiere proyectar.",
     entregables: ["Video corporativo", "Fotografía de producto", "Showreel & motion branding", "Reels para redes sociales", "Dirección de arte"],
-    desde: "USD 2,500",
   },
   {
     slug: "animacion",
@@ -65,7 +60,6 @@ const SERVICIOS = [
     tagline: "El diseño en tercera dimensión.",
     desc: "Modelado y renders hiperrealistas. Motion graphics y animaciones de marca que llevan el diseño a un nivel que las fotos no pueden alcanzar.",
     entregables: ["Renders de producto 3D", "Animación de marca", "Motion graphics", "Intro & outros de video", "Visualizaciones arquitectónicas"],
-    desde: "USD 1,500",
   },
 ];
 
@@ -142,16 +136,19 @@ export default function ServiciosContent() {
                   </ul>
                 </div>
 
-                <div className="md:col-span-3 flex flex-col justify-between gap-6">
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary mb-1">Desde</p>
-                    <p className="text-xl font-medium">{s.desde}</p>
-                  </div>
+                <div className="md:col-span-3 flex flex-col justify-end gap-4">
                   <Link
                     href="/quote"
-                    className="group/btn inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-foreground hover:text-accent transition-colors duration-300"
+                    className="group/btn inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] bg-accent text-white px-5 py-3 rounded-full hover:bg-foreground transition-colors duration-300 w-fit"
                   >
-                    Cotizar
+                    Cotizá este servicio
+                    <ArrowUpRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" aria-hidden="true" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="group/btn inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-secondary hover:text-foreground transition-colors duration-300"
+                  >
+                    Consultar alcance
                     <ArrowUpRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" aria-hidden="true" />
                   </Link>
                 </div>

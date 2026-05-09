@@ -212,6 +212,63 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ¿Cómo querés arrancar? */}
+      <section className="py-40 bg-surface border-t border-border">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-20 text-center">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-accent mb-6 block">
+              Dos caminos, un destino
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9]">
+              ¿Cómo preferís<br />
+              <span className="text-outline">arrancar?</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link
+              href="/contact"
+              className="group relative block bg-background border border-border rounded-[3rem] p-14 hover:border-foreground transition-all duration-500 overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-accent mb-8">
+                  01 — Proyecto a medida
+                </p>
+                <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-6">
+                  Hablemos de<br />tu proyecto.
+                </h3>
+                <p className="text-secondary font-light leading-relaxed max-w-sm mb-12">
+                  Si necesitás explorar el alcance, definir la estrategia o no sabés exactamente por dónde empezar. Te escuchamos, sin compromiso.
+                </p>
+                <span className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-foreground group-hover:text-accent group-hover:gap-5 transition-all duration-300">
+                  Contactar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/quote"
+              className="group relative block bg-foreground border border-foreground rounded-[3rem] p-14 hover:bg-accent transition-all duration-500 overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-accent group-hover:text-white/60 mb-8 transition-colors duration-500">
+                  02 — Autogestión
+                </p>
+                <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-[0.9] text-white mb-6">
+                  Armá tu<br />presupuesto.
+                </h3>
+                <p className="text-white/50 font-light leading-relaxed max-w-sm mb-12">
+                  Si ya sabés lo que necesitás y querés ver precios en tiempo real. Seleccionás los servicios, configurás el alcance y avanzás directo al pago.
+                </p>
+                <span className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-white group-hover:gap-5 transition-all duration-300">
+                  Ir al cotizador <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Philosophy */}
       <PhilosophySection />
 
@@ -270,10 +327,10 @@ export default function Home() {
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
             <Link
-              href="/trabajo"
+              href="/quote"
               className="inline-flex items-center gap-4 text-sm font-black uppercase tracking-widest border border-border text-secondary px-10 py-6 rounded-full hover:border-foreground hover:text-foreground transition-all duration-300"
             >
-              Ver nuestro trabajo
+              Armá tu presupuesto
             </Link>
           </div>
         </div>
